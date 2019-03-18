@@ -1,0 +1,17 @@
+---
+- name: Converge
+  hosts: all
+  pre_tasks:
+    - name: Shibboleth requires httpd
+      package:
+        name: httpd
+        state: present
+  roles:
+    - role: ansible-role-shibboleth-sp
+  vars:
+    shibboleth_sp_idp_metadata_file: idp-metadata.xml
+    shibboleth_sp_entity_id: https://example.entity.sp
+    shibboleth_sp_idp_entity_id: https://example.entity.sp
+    shibboleth_sp_protected_path: /users/auth/shibboleth/callback
+    shibboleth_sp_certificate_file: shib-sp.crt
+    shibboleth_sp_key_file: shib-sp.key
