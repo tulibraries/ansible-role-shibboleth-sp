@@ -1,0 +1,5 @@
+---
+# defaults file for shibboleth_sp-role
+
+shibboleth_sp_attribute_map_file: attribute-map.xml
+shibboleth_sp_shibboleth_package_name: shibboleth

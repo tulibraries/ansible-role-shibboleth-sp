@@ -1,0 +1,68 @@
+---
+
+- name: Add the shibboleth Repository configuration
+  yum_repository:
+    name: security_shibboleth
+    description: Shibboleth (CentOS_7)
+    baseurl: "http://downloadcontent.opensuse.org/repositories/security:/shibboleth/CentOS_7/"
+    gpgkey: "http://downloadcontent.opensuse.org/repositories/security:/shibboleth/CentOS_7/repodata/repomd.xml.key"
+    gpgcheck: true
+  tags:
+    - shibboleth
+
+- name: Install the shibboleth SP package
+  package:
+    name: "{{ shibboleth_sp_shibboleth_package_name }}"
+    state: present
+  tags:
+    - shibboleth
+
+- name: Add shibboleth configuration files
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/shibboleth/{{ item }}"
+  with_items:
+    - "{{ shibboleth_sp_idp_metadata_file }}"
+    - "{{ shibboleth_sp_attribute_map_file }}"
+  notify:
+    - restart shibd
+    - restart httpd
+  tags:
+    - shibboleth
+
+- name: Add shibboleth cert and key
+  copy:
+    src: "{{ item.file }}"
+    dest: "/etc/shibboleth/{{ item.file }}"
+    owner: shibd
+    group: shibd
+    mode: "{{ item.mode }}"
+  with_items:
+    - {file: "{{ shibboleth_sp_certificate_file }}", mode: "u=rw,g=r,o=r" }
+    - {file: "{{ shibboleth_sp_key_file }}", mode: "u=rw" }
+  notify:
+    - restart shibd
+    - restart httpd
+  tags:
+    - shibboleth
+
+- name: Template the shibboleth2.xml config file
+  template:
+    src: shibboleth2.xml.j2
+    dest: /etc/shibboleth/shibboleth2.xml
+  notify:
+    - restart shibd
+    - restart httpd
+  tags:
+    - shibboleth
+
+
+- name: Add shib config to httpd
+  template:
+    src: shib.conf.j2
+    dest: /etc/httpd/conf.d/shib.conf
+  notify:
+    - restart shibd
+    - restart httpd
+  tags:
+    - shibboleth
