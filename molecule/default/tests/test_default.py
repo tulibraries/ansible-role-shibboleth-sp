@@ -22,8 +22,8 @@ def test_shibd_process(host):
     'idp-metadata.xml',
     'shibboleth2.xml',
     'attribute-map.xml',
-    'shib-sp.crt',
-    'shib-sp.key'
+    'sp-cert.pem',
+    'sp-key.pem'
     ])
 def test_idp_config_files(host, f):
     remote_file = host.file('/etc/shibboleth/' + f)
