@@ -32,14 +32,18 @@
 
 - name: Add shibboleth cert and key
   copy:
-    src: "{{ item.file }}"
-    dest: "/etc/shibboleth/{{ item.file }}"
+    src: "{{ item.src }}"
+    dest: "/etc/shibboleth/{{ item.dest }}"
     owner: shibd
     group: shibd
     mode: "{{ item.mode }}"
   with_items:
-    - {file: "{{ shibboleth_sp_certificate_file }}", mode: "u=rw,g=r,o=r" }
-    - {file: "{{ shibboleth_sp_key_file }}", mode: "u=rw" }
+    - src: "{{ shibboleth_sp_certificate_file }}"
+      dest: "sp-cert.pem"
+      mode: "u=rw,g=r,o=r"
+    - src: "{{ shibboleth_sp_key_file }}"
+      dest: "sp-key.pem"
+      mode: "u=rw"
   notify:
     - restart shibd
     - restart httpd
