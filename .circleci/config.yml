@@ -1,0 +1,20 @@
+---
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/ansible-role-shibboleth-sp
+    docker:
+      - image: circleci/python:3.7.2
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
+    steps:
+      - checkout
+      - run:
+          name: Install
+          command: |
+            sudo pip install pipenv
+            pipenv install --dev
+      - setup_remote_docker
+      - run:
+          name: Molecule
+          command: pipenv run molecule test
