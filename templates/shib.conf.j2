@@ -23,8 +23,7 @@ ShibCompatValidUser Off
 # Ensures handler will be accessible.
 #
 <Location /Shibboleth.sso>
-  AuthType None
-  Require all granted
+  SetHandler shib
 </Location>
 
 #
