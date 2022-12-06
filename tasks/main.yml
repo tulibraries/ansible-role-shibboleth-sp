@@ -4,9 +4,13 @@
   yum_repository:
     name: security_shibboleth
     description: Shibboleth (CentOS_7)
-    baseurl: "http://downloadcontent.opensuse.org/repositories/security:/shibboleth/CentOS_7/"
-    gpgkey: "http://downloadcontent.opensuse.org/repositories/security:/shibboleth/CentOS_7/repodata/repomd.xml.key"
+    setype: rpm-md
+    mirrorlist: https://shibboleth.net/cgi-bin/mirrorlist.cgi/CentOS_7
+    gpgkey:
+      - https://shibboleth.net/downloads/service-provider/RPMS/repomd.xml.key
+      - https://shibboleth.net/downloads/service-provider/RPMS/cantor.repomd.xml.key
     gpgcheck: true
+    enabled: true
   tags:
     - shibboleth
 
