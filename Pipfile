@@ -13,7 +13,7 @@ testinfra = "*"
 
 [packages]
 ansible = "==2.9.20"
-cryptography = "==3.3.2"
+cryptography = "==39.0.1"
 jinja2 = "==2.11.3"
 molecule = "==3.3.0"
 molecule-docker = "*"
